@@ -1,0 +1,13 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Minesweeper",
+        "description": "Add Minesweeper. No additional configuration is required."
+      }
+    },
+    "abort": {
+      "already_configured": "Minesweeper is already configured."
+    }
+  }
+}

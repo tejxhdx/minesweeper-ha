@@ -1,0 +1,15 @@
+reset_records:
+  name: Reset records
+  description: Reset Minesweeper leaderboard records.
+  fields:
+    difficulty:
+      name: Difficulty
+      description: Leaderboard to reset.
+      required: true
+      selector:
+        select:
+          options:
+            - all
+            - easy
+            - medium
+            - hard

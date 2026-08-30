@@ -1,0 +1,13 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Hledání min",
+        "description": "Přidej Hledání min. Není potřeba žádná další konfigurace."
+      }
+    },
+    "abort": {
+      "already_configured": "Hledání min je již nakonfigurováno."
+    }
+  }
+}
