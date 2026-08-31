@@ -1,18 +1,13 @@
 {
   "domain": "minesweeper",
   "name": "Minesweeper",
-  "version": "1.2.3",
-  "documentation": "https://github.com/tejxhdx/minesweeper-ha",
-  "issue_tracker": "https://github.com/tejxhdx/minesweeper-ha/issues",
-  "codeowners": [
-    "@tejxhdx"
-  ],
+  "codeowners": ["@tejxhdx"],
   "config_flow": true,
-  "single_config_entry": true,
+  "dependencies": ["frontend", "http"],
+  "documentation": "https://github.com/tejxhdx/minesweeper-ha",
   "integration_type": "service",
   "iot_class": "local_push",
-  "dependencies": [
-    "frontend",
-    "http"
-  ]
+  "issue_tracker": "https://github.com/tejxhdx/minesweeper-ha/issues",
+  "single_config_entry": true,
+  "version": "1.2.3"
 }
