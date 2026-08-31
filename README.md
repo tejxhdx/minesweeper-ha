@@ -2,30 +2,17 @@
 
 A mobile-friendly Minesweeper game for Home Assistant with a persistent leaderboard tied to the authenticated Home Assistant user.
 
-## Install
+[![Install with HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=tejxhdx&repository=minesweeper-ha&category=integration)
 
-### HACS
+## Install with HACS
 
-1. Open **HACS → Integrations**.
-2. Search for **Minesweeper** (or add the GitHub repository as a custom Integration repository while the project is not yet in the default HACS list).
-3. Install.
-4. Restart Home Assistant.
-5. Go to **Settings → Devices & services → Add integration → Minesweeper**.
-6. Add the dashboard card:
+**[Install Minesweeper with HACS](https://my.home-assistant.io/redirect/hacs_repository/?owner=tejxhdx&repository=minesweeper-ha&category=integration)**
 
-```yaml
-type: custom:minesweeper-card
-```
-
-No `configuration.yaml` entry is required.
-
-No manual upload to `/config/www` is required.
-
-No manual Lovelace resource entry is required. The integration serves and registers its bundled card automatically.
-
-## Dashboard
-
-Recommended:
+1. Click the button above, or open **HACS → Integrations**.
+2. Install **Minesweeper**.
+3. Restart Home Assistant.
+4. Go to **Settings → Devices & services → Add integration → Minesweeper**.
+5. Add the dashboard card:
 
 ```yaml
 type: custom:minesweeper-card
@@ -33,13 +20,11 @@ difficulty: medium
 show_leaderboard: true
 ```
 
-The card is responsive:
+No `configuration.yaml` entry is required.
 
-- desktop: game and leaderboard side-by-side
-- mobile/tablet: game above leaderboard
-- the board keeps a square aspect ratio
-- no iframe
-- no `panel: true` requirement
+No manual upload to `/config/www` is required.
+
+No manual Lovelace resource entry is required. The integration serves and registers its bundled card automatically.
 
 ## Features
 
@@ -50,16 +35,14 @@ The card is responsive:
 - Home Assistant dark/light theme variables
 - Persistent top-10 leaderboard
 - Separate leaderboard per difficulty
-- Logged-in HA user names
+- Logged-in Home Assistant user names
 - Personal best
 - Config Flow
 - Automatic frontend resource registration
-- HACS-ready
-- Automatically registers the Lovelace module after Home Assistant startup
-- Leaderboard uses Home Assistant's authenticated `hass.callApi()` frontend API
-- Local integration icon under `custom_components/minesweeper/brand/`
-- Frontend card registered at integration setup so it is available before dashboards are constructed
+- Responsive desktop, tablet and mobile layout
+- No iframe and no `panel: true` requirement
 - Czech and English config-flow translations
+- Integration icon and HACS metadata
 
 ## Reset records
 
@@ -75,17 +58,16 @@ Available: `all`, `easy`, `medium`, `hard`.
 
 ## Development
 
-Run the Home Assistant custom integration test suite with pytest.
+Run the test suite with:
 
-HACS and Hassfest validation are included in GitHub Actions.
+```bash
+python -m pytest -q
+```
 
-## Publishing
+GitHub Actions validates the project with HACS validation, Hassfest and pytest.
 
-Before publishing, replace:
+## Release
 
-- `YOUR_GITHUB_USER` in `manifest.json`
-- `@YOUR_GITHUB_USER` in `manifest.json`
+Current release: **v1.2.3**.
 
-Then create a GitHub release such as `v1.2.0`.
-
-For inclusion in the default HACS store, the repository must meet HACS requirements, including brand assets and passing HACS/Hassfest validation.
+The project is distributed under the MIT License.
