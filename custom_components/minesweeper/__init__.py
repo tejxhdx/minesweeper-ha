@@ -1,13 +1,14 @@
 """Minesweeper Home Assistant integration."""
 from __future__ import annotations
 
+import voluptuous as vol
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall
-import voluptuous as vol
 
 from .api import MinesweeperRecordsView, MinesweeperResetView
+from .config_schema import CONFIG_SCHEMA
 from .const import DOMAIN
-from .frontend_registration import async_register_frontend, async_unregister_frontend
+from .frontend_registration import async_register_frontend
 from .storage import MinesweeperStore
 
 SERVICE_RESET = "reset_records"
@@ -16,10 +17,6 @@ SERVICE_RESET = "reset_records"
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     """Set up the integration domain."""
     hass.data.setdefault(DOMAIN, {})
-
-    # Register the Lovelace card as soon as the integration domain loads.
-    # Do not wait for a config entry: the dashboard card must be available
-    # independently of the leaderboard configuration.
     await async_register_frontend(hass)
     return True
 
@@ -28,9 +25,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up a Minesweeper config entry."""
     store = MinesweeperStore(hass)
     await store.async_load()
-
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = store
-
     hass.http.register_view(MinesweeperRecordsView(store))
     hass.http.register_view(MinesweeperResetView(store))
 
@@ -57,7 +52,4 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a Minesweeper config entry."""
     hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
-
-    # Keep the frontend card loaded while the integration domain remains
-    # loaded. The card is not tied to a single config entry.
     return True
