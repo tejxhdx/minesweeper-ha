@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.4
+
+- Fixed a blocking filesystem check during frontend registration by running it in the Home Assistant executor
+
 ## 1.2.3
 
 - Fixed automatic Lovelace resource registration timing
