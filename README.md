@@ -2,13 +2,11 @@
 
 A mobile-friendly Minesweeper game for Home Assistant with a persistent leaderboard tied to the authenticated Home Assistant user.
 
-[![Install with HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=tejxhdx&repository=minesweeper-ha&category=integration)
+[![Open in HACS](https://img.shields.io/badge/Open%20in-HACS-18BCF2?logo=homeassistant&logoColor=white)](https://my.home-assistant.io/redirect/hacs_repository/?owner=tejxhdx&repository=minesweeper-ha&category=integration)
 
 ## Install with HACS
 
-**[Install Minesweeper with HACS](https://my.home-assistant.io/redirect/hacs_repository/?owner=tejxhdx&repository=minesweeper-ha&category=integration)**
-
-1. Click the button above, or open **HACS → Integrations**.
+1. Click **Open in HACS** above, or open **HACS → Integrations**.
 2. Install **Minesweeper**.
 3. Restart Home Assistant.
 4. Go to **Settings → Devices & services → Add integration → Minesweeper**.
@@ -68,6 +66,6 @@ GitHub Actions validates the project with HACS validation, Hassfest and pytest.
 
 ## Release
 
-Current release: **v1.2.3**.
+Current release: **v1.2.4**.
 
 The project is distributed under the MIT License.
