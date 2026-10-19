@@ -15,7 +15,7 @@ _LOGGER = logging.getLogger(__name__)
 async def async_register_frontend(hass: HomeAssistant) -> None:
     """Serve the card and register its Lovelace resource before the UI uses it."""
     card_path = FRONTEND_DIR / CARD_FILENAME
-    if not card_path.is_file():
+    if not await hass.async_add_executor_job(card_path.is_file):
         _LOGGER.error("Bundled card file is missing: %s", card_path)
         return
 
