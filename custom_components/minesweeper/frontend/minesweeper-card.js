@@ -1,5 +1,5 @@
-/* Minesweeper for Home Assistant - bundled Lovelace card v1.2.3 */
-const MINESWEEPER_CARD_VERSION = "1.2.3";
+/* Minesweeper for Home Assistant - bundled Lovelace card v1.2.5 */
+const MINESWEEPER_CARD_VERSION = "1.2.5";
 console.info(`[Minesweeper] Lovelace card loaded v${MINESWEEPER_CARD_VERSION}`);
 
 class MinesweeperCard extends HTMLElement {
@@ -17,6 +17,7 @@ class MinesweeperCard extends HTMLElement {
     this.records = [];
     this.myBest = null;
     this._rendered = false;
+    this._language = "cs";
   }
 
   setConfig(config) {
@@ -29,10 +30,82 @@ class MinesweeperCard extends HTMLElement {
 
   set hass(hass) {
     this._hass = hass;
+    const language = this.getLanguage();
+    if (this._language !== language) {
+      this._language = language;
+      if (this._loaded) this.applyLanguage();
+    }
     if (!this._loaded) {
       this._loaded = true;
       this.loadRecords();
     }
+  }
+
+  getLanguage() {
+    const language = (
+      this._hass?.locale?.language ||
+      this._hass?.language ||
+      "cs"
+    ).toLowerCase();
+    return language.startsWith("cs") ? "cs" : "en";
+  }
+
+  t(key) {
+    const translations = {
+      cs: {
+        title: "Hledání min", mines: "MINY", time: "ČAS", newGame: "Nová hra",
+        clickCell: "Klikni na políčko", reveal: "👆 Odkrývat", flag: "🚩 Vlajka",
+        easy: "Lehká", medium: "Střední", hard: "Těžká", records: "${this.t("records")}",
+        loading: "Načítám…", lose: "💥 Bum! Prohrál jsi.",
+        saving: "🎉 Vyhrál jsi! Ukládám rekord…",
+        saved: "🎉 Vyhrál jsi! Rekord uložen.",
+        saveFailed: "🎉 Vyhrál jsi! Rekord se nepodařilo uložit.",
+        loadFailed: "Rekordy se nepodařilo načíst.", noRecords: "Zatím žádné rekordy.",
+        best: "Tvůj nejlepší čas:", flagAria: "Vlajka",
+        openAria: "Odkryté políčko", hiddenAria: "Skryté políčko",
+        cardDescription: "Hledání min s žebříčkem pro Home Assistant"
+      },
+      en: {
+        title: "Minesweeper", mines: "MINES", time: "TIME", newGame: "New game",
+        clickCell: "Click a cell", reveal: "👆 Reveal", flag: "🚩 Flag",
+        easy: "Easy", medium: "Medium", hard: "Hard", records: "🏆 Leaderboard",
+        loading: "Loading…", lose: "💥 Boom! You lost.",
+        saving: "🎉 You won! Saving your score…",
+        saved: "🎉 You won! Score saved.",
+        saveFailed: "🎉 You won! Your score could not be saved.",
+        loadFailed: "Unable to load leaderboard.", noRecords: "No records yet.",
+        best: "Your best time:", flagAria: "Flagged cell",
+        openAria: "Revealed cell", hiddenAria: "Hidden cell",
+        cardDescription: "Minesweeper with a leaderboard for Home Assistant"
+      }
+    };
+    return translations[this._language || this.getLanguage()][key] || key;
+  }
+
+  applyLanguage() {
+    const set = (selector, value) => {
+      const element = this.shadowRoot.querySelector(selector);
+      if (element) element.textContent = value;
+    };
+    set(".title", "💣 " + this.t("title"));
+    set("#mc + small", this.t("mines"));
+    set("#tm + small", this.t("time"));
+    set("#new", "🙂");
+    const newButton = this.shadowRoot.getElementById("new");
+    if (newButton) newButton.setAttribute("aria-label", this.t("newGame"));
+    set("#msg", this.currentMessage || this.t("clickCell"));
+    set("#reveal", this.t("reveal"));
+    set("#flag", this.t("flag"));
+    set(".leader-title", this.t("records"));
+    this.shadowRoot.querySelectorAll("[data-level], [data-tab]").forEach((button) => {
+      button.textContent = this.t(button.dataset.level || button.dataset.tab);
+    });
+    const records = this.shadowRoot.getElementById("records");
+    if (records && records.classList.contains("empty") && !records.classList.contains("error")) {
+      records.textContent = this.records.length ? records.textContent : this.t("noRecords");
+    }
+    this.updateLeaderboard();
+    this.draw();
   }
 
   getCardSize() {
@@ -160,33 +233,33 @@ class MinesweeperCard extends HTMLElement {
         <div class="wrap">
           <div class="layout">
             <section>
-              <div class="title">💣 Hledání min</div>
+              <div class="title">💣 ${this.t("title")}</div>
               <div class="top">
-                <div class="counter"><b id="mc">25</b><small>MINY</small></div>
-                <button id="new" aria-label="Nová hra">🙂</button>
-                <div class="counter"><b id="tm">0</b><small>ČAS</small></div>
+                <div class="counter"><b id="mc">25</b><small>${this.t("mines")}</small></div>
+                <button id="new" aria-label="${this.t("newGame")}">🙂</button>
+                <div class="counter"><b id="tm">0</b><small>${this.t("time")}</small></div>
               </div>
               <div id="board"></div>
-              <div class="msg" id="msg">Klikni na políčko</div>
+              <div class="msg" id="msg">${this.t("clickCell")}</div>
               <div class="buttons">
-                <button id="reveal" class="active">👆 Odkrývat</button>
-                <button id="flag">🚩 Vlajka</button>
+                <button id="reveal" class="active">${this.t("reveal")}</button>
+                <button id="flag">${this.t("flag")}</button>
               </div>
               <div class="levels">
-                <button data-level="easy">Lehká</button>
-                <button data-level="medium">Střední</button>
-                <button data-level="hard">Těžká</button>
+                <button data-level="easy">${this.t("easy")}</button>
+                <button data-level="medium">${this.t("medium")}</button>
+                <button data-level="hard">${this.t("hard")}</button>
               </div>
             </section>
             ${this.showLeaderboard ? `
             <section class="leader">
               <div class="leader-title">🏆 Rekordy</div>
               <div class="tabs">
-                <button data-tab="easy">Lehká</button>
-                <button data-tab="medium">Střední</button>
-                <button data-tab="hard">Těžká</button>
+                <button data-tab="easy">${this.t("easy")}</button>
+                <button data-tab="medium">${this.t("medium")}</button>
+                <button data-tab="hard">${this.t("hard")}</button>
               </div>
-              <div id="records" class="empty">Načítám…</div>
+              <div id="records" class="empty">${this.t("loading")}</div>
               <div id="best" class="best" style="display:none"></div>
             </section>` : ""}
           </div>
@@ -251,7 +324,7 @@ class MinesweeperCard extends HTMLElement {
     this.flags = 0; this.opened = 0; this.timer = 0;
     this.shadowRoot.getElementById("tm").textContent = "0";
     this.shadowRoot.getElementById("mc").textContent = mines;
-    this.shadowRoot.getElementById("msg").textContent = "Klikni na políčko";
+    this.setMessage("clickCell");
     this.shadowRoot.getElementById("new").textContent = "🙂";
     this.draw();
   }
@@ -296,7 +369,7 @@ class MinesweeperCard extends HTMLElement {
       this.gameOver=true;
       clearInterval(this.interval);
       this.board.flat().forEach((x)=>{if(x.mine)x.open=true});
-      this.shadowRoot.getElementById("msg").textContent="💥 Bum! Prohrál jsi.";
+      this.setMessage("lose");
       this.shadowRoot.getElementById("new").textContent="😵";
       this.draw();
       return;
@@ -344,14 +417,18 @@ class MinesweeperCard extends HTMLElement {
     this.board.flat().forEach((x)=>{if(x.mine)x.flag=true});
     this.flags=this.mines;
     this.shadowRoot.getElementById("mc").textContent="0";
-    this.shadowRoot.getElementById("msg").textContent="🎉 Vyhrál jsi! Ukládám rekord…";
+    this.setMessage("saving");
     this.shadowRoot.getElementById("new").textContent="😎";
     this.draw();
 
     const ok=await this.saveScore();
-    this.shadowRoot.getElementById("msg").textContent=ok
-      ? "🎉 Vyhrál jsi! Rekord uložen."
-      : "🎉 Vyhrál jsi! Rekord se nepodařilo uložit.";
+    this.setMessage(ok ? "saved" : "saveFailed");
+  }
+
+  setMessage(key) {
+    this.currentMessage = this.t(key);
+    const message = this.shadowRoot.getElementById("msg");
+    if (message) message.textContent = this.currentMessage;
   }
 
   async saveScore() {
@@ -387,7 +464,7 @@ class MinesweeperCard extends HTMLElement {
       const records=this.shadowRoot.getElementById("records");
       if(records){
         records.className="empty error";
-        records.textContent="Rekordy se nepodařilo načíst.";
+        records.textContent=this.t("loadFailed");
       }
       console.error("Minesweeper: unable to load records",error);
     }
@@ -398,7 +475,7 @@ class MinesweeperCard extends HTMLElement {
     if(!records)return;
     if(!this.records.length){
       records.className="empty";
-      records.textContent="Zatím žádné rekordy.";
+      records.textContent=this.t("noRecords");
     }else{
       records.className="";
       records.innerHTML=this.records.map((record,index)=>`
@@ -413,7 +490,7 @@ class MinesweeperCard extends HTMLElement {
     if(best){
       if(this.myBest){
         best.style.display="block";
-        best.textContent=`Tvůj nejlepší čas: ${this.myBest.time} s`;
+        best.textContent=`${this.t("best")} ${this.myBest.time} s`;
       }else{
         best.style.display="none";
       }
@@ -432,7 +509,7 @@ class MinesweeperCard extends HTMLElement {
       button.type="button";
       button.className=`cell${cell.open?" open":""}${cell.mine&&cell.open?" mine":""}${cell.open&&cell.n?" n"+cell.n:""}`;
       button.textContent=cell.mine&&cell.open?"💣":cell.flag?"🚩":cell.open&&cell.n?cell.n:"";
-      button.setAttribute("aria-label",cell.flag?"Vlajka":cell.open?"Odkryté políčko":"Skryté políčko");
+      button.setAttribute("aria-label",cell.flag?this.t("flagAria"):cell.open?this.t("openAria"):this.t("hiddenAria"));
       button.onclick=()=>this.mode==="flag"
         ?this.toggleFlag(rowIndex,colIndex)
         :this.reveal(rowIndex,colIndex);
@@ -457,7 +534,7 @@ if(!window.customCards.some((card)=>card.type==="minesweeper-card")){
   window.customCards.push({
     type:"minesweeper-card",
     name:"Minesweeper",
-    description:"Hledání min s leaderboardem pro Home Assistant",
+    description:"Minesweeper for Home Assistant",
     preview:true,
   });
 }
