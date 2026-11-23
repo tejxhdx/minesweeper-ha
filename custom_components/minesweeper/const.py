@@ -8,7 +8,7 @@ STORAGE_VERSION = 1
 STORAGE_KEY = "minesweeper_scores"
 
 CARD_FILENAME = "minesweeper-card.js"
-FRONTEND_VERSION = "1.2.5"
+FRONTEND_VERSION = "1.2.6"
 STATIC_URL = f"/api/{DOMAIN}/static/{CARD_FILENAME}"
 RESOURCE_URL = f"{STATIC_URL}?v={FRONTEND_VERSION}"
 FRONTEND_DIR = Path(__file__).parent / "frontend"
