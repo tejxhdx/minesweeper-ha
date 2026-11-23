@@ -33,7 +33,7 @@ class MinesweeperCard extends HTMLElement {
     const language = this.getLanguage();
     if (this._language !== language) {
       this._language = language;
-      if (this._loaded) this.applyLanguage();
+      if (this.shadowRoot?.querySelector(".title")) this.applyLanguage();
     }
     if (!this._loaded) {
       this._loaded = true;
@@ -55,7 +55,7 @@ class MinesweeperCard extends HTMLElement {
       cs: {
         title: "Hledání min", mines: "MINY", time: "ČAS", newGame: "Nová hra",
         clickCell: "Klikni na políčko", reveal: "👆 Odkrývat", flag: "🚩 Vlajka",
-        easy: "Lehká", medium: "Střední", hard: "Těžká", records: "${this.t("records")}",
+        easy: "Lehká", medium: "Střední", hard: "Těžká", records: "🏆 Rekordy",
         loading: "Načítám…", lose: "💥 Bum! Prohrál jsi.",
         saving: "🎉 Vyhrál jsi! Ukládám rekord…",
         saved: "🎉 Vyhrál jsi! Rekord uložen.",
