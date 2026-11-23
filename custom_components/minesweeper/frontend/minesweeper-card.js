@@ -1,5 +1,5 @@
-/* Minesweeper for Home Assistant - bundled Lovelace card v1.2.5 */
-const MINESWEEPER_CARD_VERSION = "1.2.5";
+/* Minesweeper for Home Assistant - bundled Lovelace card v1.2.6 */
+const MINESWEEPER_CARD_VERSION = "1.2.6";
 console.info(`[Minesweeper] Lovelace card loaded v${MINESWEEPER_CARD_VERSION}`);
 
 class MinesweeperCard extends HTMLElement {
