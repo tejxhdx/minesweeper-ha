@@ -2,14 +2,16 @@
 
 A mobile-friendly Minesweeper game for Home Assistant with a persistent leaderboard tied to the authenticated Home Assistant user.
 
-[![Open in HACS](https://img.shields.io/badge/Open%20in-HACS-18BCF2?logo=homeassistant&logoColor=white)](https://my.home-assistant.io/redirect/hacs_repository/?owner=tejxhdx&repository=minesweeper-ha&category=integration)
+[![Find in Home Assistant Marketplace](https://img.shields.io/badge/Find%20in-Home%20Assistant%20Marketplace-18BCF2?logo=homeassistant&logoColor=white)](https://www.home-assistant.io/integrations/marketplace/)
 
-## Install with HACS
+## Install from Home Assistant Marketplace
 
-1. Click **Open in HACS** above, or open **HACS → Integrations**.
-2. Install **Minesweeper**.
-3. Restart Home Assistant.
-4. Go to **Settings → Devices & services → Add integration → Minesweeper**.
+Available in the built-in Home Assistant Marketplace (Home Assistant 2026.11 and newer).
+
+1. In Home Assistant, open **Settings → Marketplace**.
+2. Search for **Minesweeper** and open the project page.
+3. Select **Install** and confirm the installation.
+4. Follow the integration setup flow. If you close it, you can add Minesweeper later under **Settings → Devices & services**.
 5. Add the dashboard card:
 
 ```yaml
@@ -23,6 +25,8 @@ No `configuration.yaml` entry is required.
 No manual upload to `/config/www` is required.
 
 No manual Lovelace resource entry is required. The integration serves and registers its bundled card automatically.
+
+For more information about the Marketplace, see the [official Home Assistant Marketplace documentation](https://www.home-assistant.io/integrations/marketplace/).
 
 ## Features
 
@@ -40,7 +44,7 @@ No manual Lovelace resource entry is required. The integration serves and regist
 - Responsive desktop, tablet and mobile layout
 - No iframe and no `panel: true` requirement
 - Czech and English config-flow translations
-- Integration icon and HACS metadata
+- Integration icon and Marketplace metadata
 
 ## Reset records
 
