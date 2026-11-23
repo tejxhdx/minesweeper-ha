@@ -93,7 +93,7 @@ class MinesweeperCard extends HTMLElement {
     set("#new", "🙂");
     const newButton = this.shadowRoot.getElementById("new");
     if (newButton) newButton.setAttribute("aria-label", this.t("newGame"));
-    set("#msg", this.currentMessage || this.t("clickCell"));
+    set("#msg", this.t(this.currentMessageKey || "clickCell"));
     set("#reveal", this.t("reveal"));
     set("#flag", this.t("flag"));
     set(".leader-title", this.t("records"));
@@ -426,6 +426,7 @@ class MinesweeperCard extends HTMLElement {
   }
 
   setMessage(key) {
+    this.currentMessageKey = key;
     this.currentMessage = this.t(key);
     const message = this.shadowRoot.getElementById("msg");
     if (message) message.textContent = this.currentMessage;
